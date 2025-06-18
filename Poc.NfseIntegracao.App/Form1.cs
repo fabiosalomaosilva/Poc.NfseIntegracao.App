@@ -1,3 +1,4 @@
+using Poc.NfseIntegracao.App.Janelas;
 using Poc.NfseIntegracao.App.Services;
 using Poc.NfseIntegracao.App.XSDs;
 using System.Text.Encodings.Web;
@@ -83,6 +84,42 @@ namespace Poc.NfseIntegracao.App
             {
                 Cursor = Cursors.Default;
             }
+        }
+
+        private void certificadoDigitalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new FrmAddCertificado();
+            frm.ShowDialog();
+        }
+
+        private void editarDadosDoEmitenteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var xmlString = txtXml.Controls[0].Text;
+            if (string.IsNullOrWhiteSpace(xmlString))
+            {
+                MessageBox.Show("Por favor, insira o XML antes de editar os dados do emitente.");
+                return;
+            }
+
+            using var form = new FrmEditarDadosEmitentes(xmlString);
+
+            if (form.ShowDialog() != DialogResult.OK) return;
+
+            var xmlModificado = form.XmlAlterado;
+
+            var rtb = new RichTextBox
+            {
+                Font = new Font("Consolas", 10),
+                Text = xmlModificado,
+                SelectionIndent = 2
+            };
+
+            txtXml.Controls[0].Text = rtb.Text;
+        }
+
+        private void sairToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

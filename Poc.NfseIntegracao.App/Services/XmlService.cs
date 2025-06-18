@@ -76,7 +76,7 @@ namespace Poc.NfseIntegracao.App.Services
 
         public string AssinarXml(string xmlInput)
         {
-            var certificado = X509CertificateLoader.LoadPkcs12FromFile("c:/CertificadoClientes/cert.pfx", "123456",
+            var certificado = new X509Certificate2("c:/CertificadoClientes/cert.pfx", "123456",
                 X509KeyStorageFlags.MachineKeySet);
 
             var xmlDoc = new XmlDocument();

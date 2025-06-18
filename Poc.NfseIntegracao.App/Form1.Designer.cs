@@ -40,6 +40,11 @@
             groupBox2 = new GroupBox();
             txtApiResponse = new RichTextBox();
             button1 = new Button();
+            menuStrip1 = new MenuStrip();
+            configuraçõesToolStripMenuItem = new ToolStripMenuItem();
+            certificadoDigitalToolStripMenuItem = new ToolStripMenuItem();
+            editarDadosDoEmitenteToolStripMenuItem = new ToolStripMenuItem();
+            sairToolStripMenuItem = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -51,14 +56,14 @@
             splitContainer2.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox2.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
             // 
             groupBox1.Controls.Add(splitContainer1);
-            groupBox1.Controls.Add(btnEnviar);
             groupBox1.Dock = DockStyle.Top;
-            groupBox1.Location = new Point(0, 0);
+            groupBox1.Location = new Point(0, 24);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(800, 573);
             groupBox1.TabIndex = 1;
@@ -79,7 +84,8 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(txtXmlFinal);
-            splitContainer1.Size = new Size(794, 510);
+            splitContainer1.Panel2.Controls.Add(btnEnviar);
+            splitContainer1.Size = new Size(794, 551);
             splitContainer1.SplitterDistance = 361;
             splitContainer1.TabIndex = 2;
             // 
@@ -87,14 +93,16 @@
             // 
             txtXml.Dock = DockStyle.Fill;
             txtXml.Location = new Point(0, 0);
+            txtXml.Margin = new Padding(15);
             txtXml.Name = "txtXml";
-            txtXml.Size = new Size(361, 510);
+            txtXml.Size = new Size(361, 551);
             txtXml.TabIndex = 0;
             // 
             // txtXmlFinal
             // 
             txtXmlFinal.Dock = DockStyle.Fill;
             txtXmlFinal.Location = new Point(0, 0);
+            txtXmlFinal.Margin = new Padding(3, 3, 3, 10);
             txtXmlFinal.Name = "txtXmlFinal";
             txtXmlFinal.Size = new Size(429, 510);
             txtXmlFinal.TabIndex = 0;
@@ -103,21 +111,23 @@
             // 
             btnEnviar.BackColor = Color.Teal;
             btnEnviar.Dock = DockStyle.Bottom;
+            btnEnviar.FlatStyle = FlatStyle.Flat;
             btnEnviar.Font = new Font("Segoe UI", 11F);
             btnEnviar.ForeColor = Color.White;
-            btnEnviar.Location = new Point(3, 529);
-            btnEnviar.Margin = new Padding(3, 15, 3, 3);
+            btnEnviar.Location = new Point(0, 510);
+            btnEnviar.Margin = new Padding(15);
             btnEnviar.Name = "btnEnviar";
-            btnEnviar.Size = new Size(794, 41);
+            btnEnviar.Padding = new Padding(3);
+            btnEnviar.Size = new Size(429, 41);
             btnEnviar.TabIndex = 1;
-            btnEnviar.Text = "Enviar";
+            btnEnviar.Text = "Enviar XML";
             btnEnviar.UseVisualStyleBackColor = false;
             btnEnviar.Click += btnEnviar_Click;
             // 
             // splitContainer2
             // 
             splitContainer2.Dock = DockStyle.Fill;
-            splitContainer2.Location = new Point(0, 573);
+            splitContainer2.Location = new Point(0, 597);
             splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -129,7 +139,7 @@
             // 
             splitContainer2.Panel2.Controls.Add(groupBox2);
             splitContainer2.Panel2MinSize = 50;
-            splitContainer2.Size = new Size(800, 201);
+            splitContainer2.Size = new Size(800, 177);
             splitContainer2.SplitterDistance = 382;
             splitContainer2.TabIndex = 4;
             // 
@@ -140,7 +150,7 @@
             groupBox3.Dock = DockStyle.Fill;
             groupBox3.Location = new Point(0, 0);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(382, 201);
+            groupBox3.Size = new Size(382, 177);
             groupBox3.TabIndex = 4;
             groupBox3.TabStop = false;
             groupBox3.Text = "Xml Compactado em Base64";
@@ -154,14 +164,14 @@
             txtXmlCompactado.Name = "txtXmlCompactado";
             txtXmlCompactado.ReadOnly = true;
             txtXmlCompactado.ScrollBars = RichTextBoxScrollBars.ForcedVertical;
-            txtXmlCompactado.Size = new Size(376, 179);
+            txtXmlCompactado.Size = new Size(376, 155);
             txtXmlCompactado.TabIndex = 2;
             txtXmlCompactado.Text = "";
             // 
             // button2
             // 
             button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button2.Location = new Point(2052, 489);
+            button2.Location = new Point(2052, 465);
             button2.Name = "button2";
             button2.Size = new Size(127, 34);
             button2.TabIndex = 1;
@@ -175,7 +185,7 @@
             groupBox2.Dock = DockStyle.Fill;
             groupBox2.Location = new Point(0, 0);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(414, 201);
+            groupBox2.Size = new Size(414, 177);
             groupBox2.TabIndex = 3;
             groupBox2.TabStop = false;
             groupBox2.Text = "Resposta do serviço NFSE";
@@ -189,19 +199,57 @@
             txtApiResponse.Name = "txtApiResponse";
             txtApiResponse.ReadOnly = true;
             txtApiResponse.ScrollBars = RichTextBoxScrollBars.ForcedVertical;
-            txtApiResponse.Size = new Size(408, 179);
+            txtApiResponse.Size = new Size(408, 155);
             txtApiResponse.TabIndex = 2;
             txtApiResponse.Text = "";
             // 
             // button1
             // 
             button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button1.Location = new Point(1484, 428);
+            button1.Location = new Point(1484, 404);
             button1.Name = "button1";
             button1.Size = new Size(127, 34);
             button1.TabIndex = 1;
             button1.Text = "Enviar";
             button1.UseVisualStyleBackColor = true;
+            // 
+            // menuStrip1
+            // 
+            menuStrip1.BackColor = SystemColors.InactiveCaption;
+            menuStrip1.Items.AddRange(new ToolStripItem[] { configuraçõesToolStripMenuItem, sairToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(800, 24);
+            menuStrip1.TabIndex = 3;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // configuraçõesToolStripMenuItem
+            // 
+            configuraçõesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { certificadoDigitalToolStripMenuItem, editarDadosDoEmitenteToolStripMenuItem });
+            configuraçõesToolStripMenuItem.Name = "configuraçõesToolStripMenuItem";
+            configuraçõesToolStripMenuItem.Size = new Size(96, 20);
+            configuraçõesToolStripMenuItem.Text = "Configurações";
+            // 
+            // certificadoDigitalToolStripMenuItem
+            // 
+            certificadoDigitalToolStripMenuItem.Name = "certificadoDigitalToolStripMenuItem";
+            certificadoDigitalToolStripMenuItem.Size = new Size(206, 22);
+            certificadoDigitalToolStripMenuItem.Text = "Certificado digital";
+            certificadoDigitalToolStripMenuItem.Click += certificadoDigitalToolStripMenuItem_Click;
+            // 
+            // editarDadosDoEmitenteToolStripMenuItem
+            // 
+            editarDadosDoEmitenteToolStripMenuItem.Name = "editarDadosDoEmitenteToolStripMenuItem";
+            editarDadosDoEmitenteToolStripMenuItem.Size = new Size(206, 22);
+            editarDadosDoEmitenteToolStripMenuItem.Text = "Editar dados do emitente";
+            editarDadosDoEmitenteToolStripMenuItem.Click += editarDadosDoEmitenteToolStripMenuItem_Click;
+            // 
+            // sairToolStripMenuItem
+            // 
+            sairToolStripMenuItem.Name = "sairToolStripMenuItem";
+            sairToolStripMenuItem.Size = new Size(38, 20);
+            sairToolStripMenuItem.Text = "Sair";
+            sairToolStripMenuItem.Click += sairToolStripMenuItem_Click;
             // 
             // Form1
             // 
@@ -210,6 +258,8 @@
             ClientSize = new Size(800, 774);
             Controls.Add(splitContainer2);
             Controls.Add(groupBox1);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
             Name = "Form1";
             Text = "Form1";
             WindowState = FormWindowState.Maximized;
@@ -224,7 +274,10 @@
             splitContainer2.ResumeLayout(false);
             groupBox3.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -240,5 +293,10 @@
         private GroupBox groupBox2;
         private RichTextBox txtApiResponse;
         private Button button1;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem configuraçõesToolStripMenuItem;
+        private ToolStripMenuItem certificadoDigitalToolStripMenuItem;
+        private ToolStripMenuItem editarDadosDoEmitenteToolStripMenuItem;
+        private ToolStripMenuItem sairToolStripMenuItem;
     }
 }
