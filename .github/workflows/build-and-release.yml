@@ -1,0 +1,140 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Aciona quando uma tag com formato v* for criada (ex: v1.0.0)
+  workflow_dispatch:  # Permite executar manualmente
+
+env:
+  DOTNET_VERSION: '9.0.x'
+  PROJECT_PATH: 'Poc.NfseIntegracao.App/Poc.NfseIntegracao.App.csproj'
+  APP_NAME: 'Poc.NfseIntegracao.App'
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+      
+    - name: Build application
+      run: |
+        dotnet build ${{ env.PROJECT_PATH }} `
+          --configuration Release `
+          --no-restore `
+          --verbosity normal
+          
+    - name: Publish application
+      run: |
+        dotnet publish ${{ env.PROJECT_PATH }} `
+          --configuration Release `
+          --output ./publish `
+          --no-build `
+          --verbosity normal `
+          --self-contained false `
+          --runtime win-x64
+          
+    - name: Create release package
+      run: |
+        # Cria um diretório para o pacote de release
+        New-Item -ItemType Directory -Path "./release-package" -Force
+        
+        # Copia os arquivos publicados
+        Copy-Item -Path "./publish/*" -Destination "./release-package/" -Recurse -Force
+        
+        # Cria um arquivo ZIP com a aplicação
+        Compress-Archive -Path "./release-package/*" -DestinationPath "./${{ env.APP_NAME }}-${{ github.ref_name }}.zip" -Force
+      shell: pwsh
+      
+    - name: Get release info
+      id: release_info
+      run: |
+        # Extrai informações da tag
+        $tagName = "${{ github.ref_name }}"
+        $version = $tagName -replace '^v', ''
+        
+        # Define outputs para usar em outros steps
+        echo "tag_name=$tagName" >> $env:GITHUB_OUTPUT
+        echo "version=$version" >> $env:GITHUB_OUTPUT
+        echo "release_name=${{ env.APP_NAME }} $version" >> $env:GITHUB_OUTPUT
+      shell: pwsh
+      
+    - name: Generate changelog
+      id: changelog
+      run: |
+        # Gera um changelog básico baseado nos commits desde a última tag
+        $changelog = @"
+        ## Novidades nesta versão
+        
+        Esta versão inclui as seguintes alterações:
+        
+        ### Funcionalidades
+        - Aplicação Windows Forms para integração com NFSe
+        - Validação de XML usando schemas XSD
+        - Interface gráfica para gerenciamento de certificados
+        - Serviços de integração com APIs NFSe
+        
+        ### Arquivos incluídos
+        - ${{ env.APP_NAME }}.exe - Aplicativo principal
+        - Newtonsoft.Json.dll - Biblioteca JSON
+        - XSDs/ - Schemas de validação XML
+        - Arquivos de configuração necessários
+        
+        ### Requisitos do sistema
+        - Windows 10 ou superior
+        - .NET 9.0 Runtime (será instalado automaticamente se necessário)
+        
+        ---
+        
+        **Download:** Baixe o arquivo ZIP, extraia e execute o ${{ env.APP_NAME }}.exe
+        "@
+        
+        # Salva o changelog em um arquivo
+        $changelog | Out-File -FilePath "./CHANGELOG.md" -Encoding UTF8
+        
+        # Define o changelog como output (escape para multiline)
+        $changelogEscaped = $changelog -replace "`n", "%0A" -replace "`r", "%0D"
+        echo "changelog=$changelogEscaped" >> $env:GITHUB_OUTPUT
+      shell: pwsh
+      
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      id: create_release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.release_info.outputs.tag_name }}
+        release_name: ${{ steps.release_info.outputs.release_name }}
+        body: ${{ steps.changelog.outputs.changelog }}
+        draft: false
+        prerelease: false
+        
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./${{ env.APP_NAME }}-${{ github.ref_name }}.zip
+        asset_name: ${{ env.APP_NAME }}-${{ github.ref_name }}.zip
+        asset_content_type: application/zip
+        
+    - name: Upload Changelog
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./CHANGELOG.md
+        asset_name: CHANGELOG.md
+        asset_content_type: text/markdown

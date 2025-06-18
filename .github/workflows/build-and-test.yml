@@ -1,0 +1,114 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '9.0.x'
+  PROJECT_PATH: 'Poc.NfseIntegracao.App/Poc.NfseIntegracao.App.csproj'
+  SOLUTION_PATH: 'Poc.NfseIntegracao.App.sln'
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Cache NuGet packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+          
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.SOLUTION_PATH }}
+      
+    - name: Build solution
+      run: |
+        dotnet build ${{ env.SOLUTION_PATH }} `
+          --configuration Debug `
+          --no-restore `
+          --verbosity normal
+          
+    - name: Build release
+      run: |
+        dotnet build ${{ env.SOLUTION_PATH }} `
+          --configuration Release `
+          --no-restore `
+          --verbosity normal
+          
+    - name: Test build artifacts
+      run: |
+        # Verifica se os arquivos principais foram gerados
+        $debugPath = "Poc.NfseIntegracao.App/bin/Debug/net9.0-windows"
+        $releasePath = "Poc.NfseIntegracao.App/bin/Release/net9.0-windows"
+        
+        Write-Host "Verificando artefatos de build..."
+        
+        # Verifica build Debug
+        if (Test-Path "$debugPath/Poc.NfseIntegracao.App.exe") {
+          Write-Host "✅ Build Debug: Executável encontrado"
+        } else {
+          Write-Host "❌ Build Debug: Executável não encontrado"
+          exit 1
+        }
+        
+        # Verifica build Release
+        if (Test-Path "$releasePath/Poc.NfseIntegracao.App.exe") {
+          Write-Host "✅ Build Release: Executável encontrado"
+        } else {
+          Write-Host "❌ Build Release: Executável não encontrado"
+          exit 1
+        }
+        
+        # Verifica dependências
+        if (Test-Path "$releasePath/Newtonsoft.Json.dll") {
+          Write-Host "✅ Dependência Newtonsoft.Json encontrada"
+        } else {
+          Write-Host "❌ Dependência Newtonsoft.Json não encontrada"
+          exit 1
+        }
+        
+        # Verifica XSDs
+        if (Test-Path "$releasePath/XSDs") {
+          Write-Host "✅ Pasta XSDs encontrada"
+          $xsdCount = (Get-ChildItem "$releasePath/XSDs" -Filter "*.xsd").Count
+          Write-Host "📁 Encontrados $xsdCount arquivos XSD"
+        } else {
+          Write-Host "❌ Pasta XSDs não encontrada"
+          exit 1
+        }
+        
+        Write-Host "✅ Todos os artefatos de build foram verificados com sucesso!"
+      shell: pwsh
+      
+    - name: Upload build artifacts (Debug)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: build-artifacts-debug
+        path: |
+          Poc.NfseIntegracao.App/bin/Debug/net9.0-windows/
+        retention-days: 7
+        
+    - name: Upload build artifacts (Release)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: build-artifacts-release
+        path: |
+          Poc.NfseIntegracao.App/bin/Release/net9.0-windows/
+        retention-days: 7
