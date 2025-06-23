@@ -36,16 +36,17 @@
             txtNsu = new TextBox();
             label1 = new Label();
             dataGridView1 = new DataGridView();
+            nSUDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            chaveAcessoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            tipoDocumentoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            dataHoraGeracaoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             lotedfeBindingSource = new BindingSource(components);
             splitContainer1 = new SplitContainer();
             groupBox1 = new GroupBox();
             txtXmlCompactado = new Poc.NfseIntegracao.App.Componentes.RichTextBoxWithLines();
             groupBox2 = new GroupBox();
             txtXmlDescompactado = new Poc.NfseIntegracao.App.Componentes.RichTextBoxWithLines();
-            nSUDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            chaveAcessoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            tipoDocumentoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            dataHoraGeracaoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            btnVerDanfe = new Button();
             tableLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -77,6 +78,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(btnVerDanfe);
             panel1.Controls.Add(btmFechar);
             panel1.Controls.Add(btnPesquisar);
             panel1.Controls.Add(txtNsu);
@@ -154,6 +156,38 @@
             dataGridView1.TabIndex = 1;
             dataGridView1.CellClick += dataGridView1_CellClick;
             // 
+            // nSUDataGridViewTextBoxColumn
+            // 
+            nSUDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            nSUDataGridViewTextBoxColumn.DataPropertyName = "NSU";
+            nSUDataGridViewTextBoxColumn.HeaderText = "NSU";
+            nSUDataGridViewTextBoxColumn.Name = "nSUDataGridViewTextBoxColumn";
+            nSUDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // chaveAcessoDataGridViewTextBoxColumn
+            // 
+            chaveAcessoDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            chaveAcessoDataGridViewTextBoxColumn.DataPropertyName = "ChaveAcesso";
+            chaveAcessoDataGridViewTextBoxColumn.HeaderText = "ChaveAcesso";
+            chaveAcessoDataGridViewTextBoxColumn.Name = "chaveAcessoDataGridViewTextBoxColumn";
+            chaveAcessoDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // tipoDocumentoDataGridViewTextBoxColumn
+            // 
+            tipoDocumentoDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            tipoDocumentoDataGridViewTextBoxColumn.DataPropertyName = "TipoDocumento";
+            tipoDocumentoDataGridViewTextBoxColumn.HeaderText = "TipoDocumento";
+            tipoDocumentoDataGridViewTextBoxColumn.Name = "tipoDocumentoDataGridViewTextBoxColumn";
+            tipoDocumentoDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // dataHoraGeracaoDataGridViewTextBoxColumn
+            // 
+            dataHoraGeracaoDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataHoraGeracaoDataGridViewTextBoxColumn.DataPropertyName = "DataHoraGeracao";
+            dataHoraGeracaoDataGridViewTextBoxColumn.HeaderText = "DataHoraGeracao";
+            dataHoraGeracaoDataGridViewTextBoxColumn.Name = "dataHoraGeracaoDataGridViewTextBoxColumn";
+            dataHoraGeracaoDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
             // lotedfeBindingSource
             // 
             lotedfeBindingSource.DataSource = typeof(DTOs.Lotedfe);
@@ -213,37 +247,20 @@
             txtXmlDescompactado.Size = new Size(607, 263);
             txtXmlDescompactado.TabIndex = 0;
             // 
-            // nSUDataGridViewTextBoxColumn
+            // btnVerDanfe
             // 
-            nSUDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            nSUDataGridViewTextBoxColumn.DataPropertyName = "NSU";
-            nSUDataGridViewTextBoxColumn.HeaderText = "NSU";
-            nSUDataGridViewTextBoxColumn.Name = "nSUDataGridViewTextBoxColumn";
-            nSUDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // chaveAcessoDataGridViewTextBoxColumn
-            // 
-            chaveAcessoDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            chaveAcessoDataGridViewTextBoxColumn.DataPropertyName = "ChaveAcesso";
-            chaveAcessoDataGridViewTextBoxColumn.HeaderText = "ChaveAcesso";
-            chaveAcessoDataGridViewTextBoxColumn.Name = "chaveAcessoDataGridViewTextBoxColumn";
-            chaveAcessoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // tipoDocumentoDataGridViewTextBoxColumn
-            // 
-            tipoDocumentoDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            tipoDocumentoDataGridViewTextBoxColumn.DataPropertyName = "TipoDocumento";
-            tipoDocumentoDataGridViewTextBoxColumn.HeaderText = "TipoDocumento";
-            tipoDocumentoDataGridViewTextBoxColumn.Name = "tipoDocumentoDataGridViewTextBoxColumn";
-            tipoDocumentoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // dataHoraGeracaoDataGridViewTextBoxColumn
-            // 
-            dataHoraGeracaoDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataHoraGeracaoDataGridViewTextBoxColumn.DataPropertyName = "DataHoraGeracao";
-            dataHoraGeracaoDataGridViewTextBoxColumn.HeaderText = "DataHoraGeracao";
-            dataHoraGeracaoDataGridViewTextBoxColumn.Name = "dataHoraGeracaoDataGridViewTextBoxColumn";
-            dataHoraGeracaoDataGridViewTextBoxColumn.ReadOnly = true;
+            btnVerDanfe.BackColor = Color.Goldenrod;
+            btnVerDanfe.FlatStyle = FlatStyle.Flat;
+            btnVerDanfe.Font = new Font("Segoe UI", 10F);
+            btnVerDanfe.ForeColor = Color.Black;
+            btnVerDanfe.Location = new Point(338, 16);
+            btnVerDanfe.MinimumSize = new Size(0, 25);
+            btnVerDanfe.Name = "btnVerDanfe";
+            btnVerDanfe.Size = new Size(115, 32);
+            btnVerDanfe.TabIndex = 4;
+            btnVerDanfe.Text = "Ver DANFE";
+            btnVerDanfe.UseVisualStyleBackColor = false;
+            btnVerDanfe.Click += btnVerDanfe_Click;
             // 
             // FrmNsuList
             // 
@@ -288,5 +305,6 @@
         private DataGridViewTextBoxColumn chaveAcessoDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn tipoDocumentoDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn dataHoraGeracaoDataGridViewTextBoxColumn;
+        private Button btnVerDanfe;
     }
 }

@@ -76,5 +76,21 @@ namespace Poc.NfseIntegracao.App.Janelas
         {
             this.Close();
         }
+
+        private async void btnVerDanfe_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var data = lotedfeBindingSource.Current as Lotedfe;
+                if (data == null) return;
+                var service = new NfseIntegrationService();
+                await service.ConsultarNfse(data.ChaveAcesso);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

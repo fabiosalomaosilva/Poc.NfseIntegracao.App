@@ -9,7 +9,7 @@ public class DataService
     {
         try
         {
-            var filePath = "Data/dados.json";
+            var filePath = "c:/CertificadoClientes/Dados/dados.json";
             List<object> dataList = [];
 
             if (File.Exists(filePath))
@@ -47,7 +47,7 @@ public class DataService
 
     public static List<NfseData> GetNfseData()
     {
-        var filePath = "Data/dados.json";
+        var filePath = "c:/CertificadoClientes/Dados/dados.json";
         List<NfseData> dataList = [];
 
         if (!File.Exists(filePath)) return dataList;

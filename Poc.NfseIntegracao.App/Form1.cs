@@ -19,22 +19,39 @@ namespace Poc.NfseIntegracao.App
         private void Form1_Load(object sender, EventArgs e)
         {
             VerificaCertificado();
+            VerificarArquivoDados();
             txtXml.Controls[0].Text = TemplateXml.XmlExemplo;
 
-            using var form = new FrmEditarDadosEmitentes(txtXml.Controls[0].Text);
+            //using var form = new FrmEditarDadosEmitentes(txtXml.Controls[0].Text);
 
-            if (form.ShowDialog() != DialogResult.OK) return;
+            //if (form.ShowDialog() != DialogResult.OK) return;
 
-            var xmlModificado = form.XmlAlterado;
+            //var xmlModificado = form.XmlAlterado;
 
-            var rtb = new RichTextBox
+            //var rtb = new RichTextBox
+            //{
+            //    Font = new Font("Consolas", 10),
+            //    Text = xmlModificado,
+            //    SelectionIndent = 2
+            //};
+
+            //txtXml.Controls[0].Text = rtb.Text;
+        }
+
+        private void VerificarArquivoDados()
+        {
+            var fileDir = "c:/CertificadoClientes/Dados";
+            var filePath = "c:/CertificadoClientes/Dados/dados.json";
+
+            if (Directory.Exists(fileDir)) return;
+
+            Directory.CreateDirectory(fileDir);
+            if (!File.Exists(filePath))
             {
-                Font = new Font("Consolas", 10),
-                Text = xmlModificado,
-                SelectionIndent = 2
-            };
+                File.WriteAllText(filePath, "[]");
+            }
 
-            txtXml.Controls[0].Text = rtb.Text;
+
         }
 
         private void VerificaCertificado()
