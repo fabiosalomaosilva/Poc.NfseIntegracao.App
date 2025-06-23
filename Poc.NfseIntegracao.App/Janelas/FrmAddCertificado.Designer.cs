@@ -38,7 +38,7 @@
             // 
             // txtFile
             // 
-            txtFile.Location = new Point(12, 45);
+            txtFile.Location = new Point(12, 39);
             txtFile.Name = "txtFile";
             txtFile.ReadOnly = true;
             txtFile.Size = new Size(323, 23);
@@ -46,7 +46,7 @@
             // 
             // btnFindFile
             // 
-            btnFindFile.Location = new Point(341, 45);
+            btnFindFile.Location = new Point(341, 39);
             btnFindFile.Name = "btnFindFile";
             btnFindFile.Size = new Size(44, 23);
             btnFindFile.TabIndex = 1;
@@ -57,28 +57,36 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(229, 85);
+            btnCancelar.BackColor = Color.Red;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Font = new Font("Segoe UI", 9.75F);
+            btnCancelar.ForeColor = Color.White;
+            btnCancelar.Location = new Point(270, 76);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(75, 23);
+            btnCancelar.Size = new Size(115, 32);
             btnCancelar.TabIndex = 2;
             btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
             // 
             // button3
             // 
-            button3.Location = new Point(310, 85);
+            button3.BackColor = Color.Green;
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.Font = new Font("Segoe UI", 9.75F);
+            button3.ForeColor = Color.White;
+            button3.Location = new Point(149, 76);
             button3.Name = "button3";
-            button3.Size = new Size(75, 23);
+            button3.Size = new Size(115, 32);
             button3.TabIndex = 3;
             button3.Text = "Salvar";
-            button3.UseVisualStyleBackColor = true;
+            button3.UseVisualStyleBackColor = false;
             button3.Click += button3_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 27);
+            label1.Location = new Point(12, 21);
             label1.Name = "label1";
             label1.Size = new Size(116, 15);
             label1.TabIndex = 4;

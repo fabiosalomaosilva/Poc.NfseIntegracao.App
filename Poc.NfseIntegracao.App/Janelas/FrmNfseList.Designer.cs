@@ -123,23 +123,31 @@
             // btnCancelar
             // 
             btnCancelar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnCancelar.Location = new Point(873, 7);
+            btnCancelar.BackColor = Color.Red;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Font = new Font("Segoe UI", 9.75F);
+            btnCancelar.ForeColor = Color.White;
+            btnCancelar.Location = new Point(873, 6);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(115, 30);
+            btnCancelar.Size = new Size(115, 32);
             btnCancelar.TabIndex = 1;
             btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += button2_Click;
             // 
             // btnVerXml
             // 
             btnVerXml.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnVerXml.Location = new Point(752, 7);
+            btnVerXml.BackColor = Color.Green;
+            btnVerXml.FlatStyle = FlatStyle.Flat;
+            btnVerXml.Font = new Font("Segoe UI", 9.75F);
+            btnVerXml.ForeColor = Color.White;
+            btnVerXml.Location = new Point(752, 6);
             btnVerXml.Name = "btnVerXml";
-            btnVerXml.Size = new Size(115, 30);
+            btnVerXml.Size = new Size(115, 32);
             btnVerXml.TabIndex = 0;
             btnVerXml.Text = "Ver DANFE";
-            btnVerXml.UseVisualStyleBackColor = true;
+            btnVerXml.UseVisualStyleBackColor = false;
             btnVerXml.Click += btnVerXml_Click;
             // 
             // FrmNfseList

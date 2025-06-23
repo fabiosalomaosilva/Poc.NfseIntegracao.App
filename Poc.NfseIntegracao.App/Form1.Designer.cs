@@ -46,11 +46,11 @@
             editarDadosDoEmitenteToolStripMenuItem = new ToolStripMenuItem();
             cadastrosToolStripMenuItem = new ToolStripMenuItem();
             enviadasToolStripMenuItem = new ToolStripMenuItem();
+            nSUToolStripMenuItem = new ToolStripMenuItem();
             sairToolStripMenuItem = new ToolStripMenuItem();
             toolStrip1 = new ToolStrip();
             toolStripButton2 = new ToolStripButton();
             toolStripButton1 = new ToolStripButton();
-            nSUToolStripMenuItem = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -72,7 +72,7 @@
             groupBox1.Dock = DockStyle.Top;
             groupBox1.Location = new Point(0, 63);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(800, 573);
+            groupBox1.Size = new Size(1159, 573);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "XML";
@@ -91,8 +91,8 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(txtXmlFinal);
-            splitContainer1.Size = new Size(794, 551);
-            splitContainer1.SplitterDistance = 361;
+            splitContainer1.Size = new Size(1153, 551);
+            splitContainer1.SplitterDistance = 524;
             splitContainer1.TabIndex = 2;
             // 
             // txtXml
@@ -101,7 +101,7 @@
             txtXml.Location = new Point(0, 0);
             txtXml.Margin = new Padding(15);
             txtXml.Name = "txtXml";
-            txtXml.Size = new Size(361, 551);
+            txtXml.Size = new Size(524, 551);
             txtXml.TabIndex = 0;
             // 
             // txtXmlFinal
@@ -110,7 +110,7 @@
             txtXmlFinal.Location = new Point(0, 0);
             txtXmlFinal.Margin = new Padding(3, 3, 3, 10);
             txtXmlFinal.Name = "txtXmlFinal";
-            txtXmlFinal.Size = new Size(429, 551);
+            txtXmlFinal.Size = new Size(625, 551);
             txtXmlFinal.TabIndex = 0;
             // 
             // splitContainer2
@@ -128,8 +128,8 @@
             // 
             splitContainer2.Panel2.Controls.Add(groupBox2);
             splitContainer2.Panel2MinSize = 50;
-            splitContainer2.Size = new Size(800, 138);
-            splitContainer2.SplitterDistance = 382;
+            splitContainer2.Size = new Size(1159, 138);
+            splitContainer2.SplitterDistance = 553;
             splitContainer2.TabIndex = 4;
             // 
             // groupBox3
@@ -139,7 +139,7 @@
             groupBox3.Dock = DockStyle.Fill;
             groupBox3.Location = new Point(0, 0);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(382, 138);
+            groupBox3.Size = new Size(553, 138);
             groupBox3.TabIndex = 4;
             groupBox3.TabStop = false;
             groupBox3.Text = "Xml Compactado em Base64";
@@ -153,14 +153,14 @@
             txtXmlCompactado.Name = "txtXmlCompactado";
             txtXmlCompactado.ReadOnly = true;
             txtXmlCompactado.ScrollBars = RichTextBoxScrollBars.ForcedVertical;
-            txtXmlCompactado.Size = new Size(376, 116);
+            txtXmlCompactado.Size = new Size(547, 116);
             txtXmlCompactado.TabIndex = 2;
             txtXmlCompactado.Text = "";
             // 
             // button2
             // 
             button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button2.Location = new Point(2052, 426);
+            button2.Location = new Point(2223, 426);
             button2.Name = "button2";
             button2.Size = new Size(127, 34);
             button2.TabIndex = 1;
@@ -174,7 +174,7 @@
             groupBox2.Dock = DockStyle.Fill;
             groupBox2.Location = new Point(0, 0);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(414, 138);
+            groupBox2.Size = new Size(602, 138);
             groupBox2.TabIndex = 3;
             groupBox2.TabStop = false;
             groupBox2.Text = "Resposta do serviço NFSE";
@@ -188,14 +188,14 @@
             txtApiResponse.Name = "txtApiResponse";
             txtApiResponse.ReadOnly = true;
             txtApiResponse.ScrollBars = RichTextBoxScrollBars.ForcedVertical;
-            txtApiResponse.Size = new Size(408, 116);
+            txtApiResponse.Size = new Size(596, 116);
             txtApiResponse.TabIndex = 2;
             txtApiResponse.Text = "";
             // 
             // button1
             // 
             button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button1.Location = new Point(1484, 365);
+            button1.Location = new Point(1672, 365);
             button1.Name = "button1";
             button1.Size = new Size(127, 34);
             button1.TabIndex = 1;
@@ -208,7 +208,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { configuraçõesToolStripMenuItem, cadastrosToolStripMenuItem, sairToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(800, 24);
+            menuStrip1.Size = new Size(1159, 24);
             menuStrip1.TabIndex = 3;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -243,9 +243,16 @@
             // enviadasToolStripMenuItem
             // 
             enviadasToolStripMenuItem.Name = "enviadasToolStripMenuItem";
-            enviadasToolStripMenuItem.Size = new Size(180, 22);
+            enviadasToolStripMenuItem.Size = new Size(111, 22);
             enviadasToolStripMenuItem.Text = "DANFE";
             enviadasToolStripMenuItem.Click += enviadasToolStripMenuItem_Click;
+            // 
+            // nSUToolStripMenuItem
+            // 
+            nSUToolStripMenuItem.Name = "nSUToolStripMenuItem";
+            nSUToolStripMenuItem.Size = new Size(111, 22);
+            nSUToolStripMenuItem.Text = "NSU";
+            nSUToolStripMenuItem.Click += nSUToolStripMenuItem_Click;
             // 
             // sairToolStripMenuItem
             // 
@@ -260,7 +267,7 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton2, toolStripButton1 });
             toolStrip1.Location = new Point(0, 24);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(800, 39);
+            toolStrip1.Size = new Size(1159, 39);
             toolStrip1.TabIndex = 3;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -283,25 +290,18 @@
             toolStripButton1.Text = "Enviar XML";
             toolStripButton1.Click += btnEnviar_Click;
             // 
-            // nSUToolStripMenuItem
-            // 
-            nSUToolStripMenuItem.Name = "nSUToolStripMenuItem";
-            nSUToolStripMenuItem.Size = new Size(180, 22);
-            nSUToolStripMenuItem.Text = "NSU";
-            nSUToolStripMenuItem.Click += nSUToolStripMenuItem_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 774);
+            ClientSize = new Size(1159, 774);
             Controls.Add(splitContainer2);
             Controls.Add(groupBox1);
             Controls.Add(toolStrip1);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "Form1";
-            Text = "Form1";
+            Text = "Testes de Integração da NFSE Nacional";
             WindowState = FormWindowState.Maximized;
             Load += Form1_Load;
             groupBox1.ResumeLayout(false);

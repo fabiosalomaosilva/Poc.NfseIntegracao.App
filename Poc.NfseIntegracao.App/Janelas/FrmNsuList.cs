@@ -71,5 +71,10 @@ namespace Poc.NfseIntegracao.App.Janelas
 
             txtXmlDescompactado.Controls[0].Text = rtb.Text;
         }
+
+        private void btmFechar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

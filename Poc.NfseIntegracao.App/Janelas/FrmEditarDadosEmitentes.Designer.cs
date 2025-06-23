@@ -165,22 +165,30 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(203, 7);
+            btnCancelar.BackColor = Color.Red;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Font = new Font("Segoe UI", 9.75F);
+            btnCancelar.ForeColor = Color.White;
+            btnCancelar.Location = new Point(267, 9);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(85, 36);
+            btnCancelar.Size = new Size(115, 32);
             btnCancelar.TabIndex = 1;
             btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
             // 
             // btnSalvar
             // 
-            btnSalvar.Location = new Point(297, 7);
+            btnSalvar.BackColor = Color.Green;
+            btnSalvar.FlatStyle = FlatStyle.Flat;
+            btnSalvar.Font = new Font("Segoe UI", 9.75F);
+            btnSalvar.ForeColor = Color.White;
+            btnSalvar.Location = new Point(136, 9);
             btnSalvar.Name = "btnSalvar";
-            btnSalvar.Size = new Size(85, 36);
+            btnSalvar.Size = new Size(115, 32);
             btnSalvar.TabIndex = 0;
             btnSalvar.Text = "Salvar";
-            btnSalvar.UseVisualStyleBackColor = true;
+            btnSalvar.UseVisualStyleBackColor = false;
             btnSalvar.Click += btnSalvar_Click;
             // 
             // txtCompetencia
