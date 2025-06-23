@@ -52,6 +52,7 @@ public class DataService
 
         if (!File.Exists(filePath)) return dataList;
         var existingJson = File.ReadAllText(filePath);
+        var file = new FileInfo(filePath);
 
         if (!string.IsNullOrWhiteSpace(existingJson))
         {
