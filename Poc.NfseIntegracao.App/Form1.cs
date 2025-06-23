@@ -1,8 +1,11 @@
+using Poc.NfseIntegracao.App.Data;
+using Poc.NfseIntegracao.App.DTOs;
 using Poc.NfseIntegracao.App.Janelas;
 using Poc.NfseIntegracao.App.Services;
 using Poc.NfseIntegracao.App.XSDs;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Xml.Linq;
 
 namespace Poc.NfseIntegracao.App
 {
@@ -11,6 +14,42 @@ namespace Poc.NfseIntegracao.App
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            VerificaCertificado();
+            txtXml.Controls[0].Text = TemplateXml.XmlExemplo;
+
+            using var form = new FrmEditarDadosEmitentes(txtXml.Controls[0].Text);
+
+            if (form.ShowDialog() != DialogResult.OK) return;
+
+            var xmlModificado = form.XmlAlterado;
+
+            var rtb = new RichTextBox
+            {
+                Font = new Font("Consolas", 10),
+                Text = xmlModificado,
+                SelectionIndent = 2
+            };
+
+            txtXml.Controls[0].Text = rtb.Text;
+        }
+
+        private void VerificaCertificado()
+        {
+            if (!Directory.Exists("c:/CertificadoClientes"))
+            {
+                AbrirJanelaAddCertificadoDigital();
+                return;
+            }
+
+            if (File.Exists("c:/CertificadoClientes/cert.pfx"))
+            {
+                return;
+            }
+            AbrirJanelaAddCertificadoDigital();
         }
 
         private async void btnEnviar_Click(object sender, EventArgs e)
@@ -69,12 +108,16 @@ namespace Poc.NfseIntegracao.App
 
                 var response = await serviceIntegration.CriarNfse(xmlCompactado);
 
-                txtApiResponse.Text = response.Success
-                    ? JsonSerializer.Serialize(response.Data, new JsonSerializerOptions { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping })
-                        .ToString()
-                    : JsonSerializer
-                        .Serialize(response.ErrorMessage, new JsonSerializerOptions { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping })
-                        .ToString();
+                if (response.Success)
+                {
+                    txtApiResponse.Text = JsonSerializer.Serialize(response.Data, new JsonSerializerOptions { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+
+                    var (cnpj, nomeEmitente) = ObterDadosEmitente(txtXml.Controls[0].Text.Trim());
+                    var data = JsonSerializer.Deserialize<DfeResponse>(txtApiResponse.Text);
+                    DataService.SaveData(data.Lote[0].ChaveAcesso, cnpj, nomeEmitente, data.DataHoraProcessamento);
+                }
+                else
+                    txtApiResponse.Text = JsonSerializer.Serialize(response.ErrorMessage, new JsonSerializerOptions { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
             }
             catch (Exception ex)
             {
@@ -87,6 +130,11 @@ namespace Poc.NfseIntegracao.App
         }
 
         private void certificadoDigitalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirJanelaAddCertificadoDigital();
+        }
+
+        private static void AbrirJanelaAddCertificadoDigital()
         {
             var frm = new FrmAddCertificado();
             frm.ShowDialog();
@@ -121,5 +169,24 @@ namespace Poc.NfseIntegracao.App
         {
             Application.Exit();
         }
+
+        private (string cadastroNacional, string nomeEmitente) ObterDadosEmitente(string xml)
+        {
+            var xmlDoc = XDocument.Parse(xml);
+            XNamespace ns = "http://www.sped.fazenda.gov.br/nfse";
+            var emitente = xmlDoc.Descendants(ns + "emit").FirstOrDefault();
+            if (emitente == null) return (string.Empty, string.Empty);
+            var cnpj = emitente.Element(ns + "CNPJ")?.Value ?? string.Empty;
+            var nome = emitente.Element(ns + "xNome")?.Value ?? string.Empty;
+            return (cnpj, nome);
+        }
+
+        private void enviadasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new FrmNfseList();
+            frm.ShowDialog();
+        }
+
+
     }
 }

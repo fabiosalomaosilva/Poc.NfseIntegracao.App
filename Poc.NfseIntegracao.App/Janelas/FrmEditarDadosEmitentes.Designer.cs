@@ -78,7 +78,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 45F));
-            tableLayoutPanel1.Size = new Size(550, 299);
+            tableLayoutPanel1.Size = new Size(550, 286);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // label1
@@ -160,12 +160,12 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(153, 233);
             panel1.Name = "panel1";
-            panel1.Size = new Size(394, 63);
+            panel1.Size = new Size(394, 50);
             panel1.TabIndex = 9;
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(206, 3);
+            btnCancelar.Location = new Point(203, 7);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(85, 36);
             btnCancelar.TabIndex = 1;
@@ -175,7 +175,7 @@
             // 
             // btnSalvar
             // 
-            btnSalvar.Location = new Point(297, 3);
+            btnSalvar.Location = new Point(297, 7);
             btnSalvar.Name = "btnSalvar";
             btnSalvar.Size = new Size(85, 36);
             btnSalvar.TabIndex = 0;
@@ -238,9 +238,12 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancelar;
-            ClientSize = new Size(550, 299);
+            ClientSize = new Size(550, 286);
             Controls.Add(tableLayoutPanel1);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FrmEditarDadosEmitentes";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Editar dados do XML";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();

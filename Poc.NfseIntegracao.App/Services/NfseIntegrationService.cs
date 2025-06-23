@@ -7,26 +7,38 @@ namespace Poc.NfseIntegracao.App.Services;
 
 public class NfseIntegrationService : IDisposable
 {
-    private readonly HttpClient _httpClient;
+    private HttpClient _httpClient;
     private bool _disposed = false;
 
-    public NfseIntegrationService()
+
+    public void CriarHttpCliente(TipoEndpoint tipoEndpoint)
     {
         var handler = new HttpClientHandler();
         handler.ClientCertificateOptions = ClientCertificateOption.Manual;
 
         var certificate = new X509Certificate2("C:/CertificadoClientes/cert.pfx", "123456");
         handler.ClientCertificates.Add(certificate);
+        var urlBase = string.Empty;
+
+        switch (tipoEndpoint)
+        {
+            case TipoEndpoint.Adn:
+                urlBase = "https://adn.producaorestrita.nfse.gov.br/";
+                break;
+            case TipoEndpoint.Sefin:
+                urlBase = "https://sefin.producaorestrita.nfse.gov.br/";
+                break;
+        }
 
         _httpClient = new HttpClient(handler)
         {
-            //BaseAddress = new Uri("https://sefin.nfse.gov.br/")
-            //BaseAddress = new Uri("https://sefin.producaorestrita.nfse.gov.br/")
-            BaseAddress = new Uri("https://adn.producaorestrita.nfse.gov.br/")
+            BaseAddress = new Uri(urlBase)
         };
 
         ConfigureHttpClient();
     }
+
+
 
     private void ConfigureHttpClient()
     {
@@ -39,6 +51,7 @@ public class NfseIntegrationService : IDisposable
     {
         try
         {
+            CriarHttpCliente(TipoEndpoint.Adn);
             var request = new
             {
                 LoteXmlGZipB64 = new[] { dpsCompactada }
@@ -79,20 +92,37 @@ public class NfseIntegrationService : IDisposable
     {
         try
         {
-            var endpoint = $"/nfse/{chaveAcesso}";
+            CriarHttpCliente(TipoEndpoint.Sefin);
+
+            var endpoint = $"/sefinnacional/danfse/{chaveAcesso}";
 
 
             var response = await _httpClient.GetAsync(endpoint);
-            var responseContent = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
             {
-                var result = JsonSerializer.Deserialize<object>(responseContent);
-                return new ApiResponse<object> { Success = true, Data = result };
+                var responseContent = await response.Content.ReadAsByteArrayAsync();
+                var tempFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.pdf");
+                await File.WriteAllBytesAsync(tempFilePath, responseContent);
+
+                var process = new System.Diagnostics.Process();
+                process.StartInfo = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = tempFilePath,
+                    UseShellExecute = true
+                };
+                process.Start();
+
+                return new ApiResponse<object>
+                {
+                    Success = true,
+                    Data = new { FilePath = tempFilePath }
+                };
             }
             else
             {
-                var erroResponse = JsonSerializer.Deserialize<NFSePostResponseErro>(responseContent);
+                var responseContentError = await response.Content.ReadAsStringAsync();
+                var erroResponse = JsonSerializer.Deserialize<NFSePostResponseErro>(responseContentError);
                 return new ApiResponse<object>
                 {
                     Success = false,

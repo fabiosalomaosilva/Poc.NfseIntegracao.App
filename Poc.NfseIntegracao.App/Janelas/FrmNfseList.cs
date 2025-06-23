@@ -1,0 +1,40 @@
+﻿using Poc.NfseIntegracao.App.DTOs;
+using Poc.NfseIntegracao.App.Services;
+
+namespace Poc.NfseIntegracao.App.Janelas;
+public partial class FrmNfseList : Form
+{
+    public FrmNfseList()
+    {
+        InitializeComponent();
+    }
+
+    private void FrmNfseList_Load(object sender, EventArgs e)
+    {
+        var dataList = DataService.GetNfseData();
+        bindingSource1.DataSource = dataList;
+        dataGridView1.DataSource = bindingSource1;
+        dataGridView1.Refresh();
+    }
+
+    private void button2_Click(object sender, EventArgs e)
+    {
+        this.Close();
+    }
+
+    private async void btnVerXml_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var data = bindingSource1.Current as NfseData;
+            if (data == null) return;
+            var service = new NfseIntegrationService();
+            await service.ConsultarNfse(data.ChaveAcesso);
+
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
+}
