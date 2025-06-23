@@ -92,7 +92,24 @@ namespace Poc.NfseIntegracao.App
                 //    return;
                 //}
 
-                txtXmlFinal.Controls[0].Text = xmlAssinado;
+                var xmlFormatado = xmlAssinado;
+                try
+                {
+                    var doc = new System.Xml.XmlDocument();
+                    doc.LoadXml(xmlAssinado);
+                    await using var stringWriter = new StringWriter();
+                    await using var xmlTextWriter = new System.Xml.XmlTextWriter(stringWriter);
+                    xmlTextWriter.Formatting = System.Xml.Formatting.Indented;
+                    doc.WriteContentTo(xmlTextWriter);
+                    xmlTextWriter.Flush();
+                    xmlFormatado = stringWriter.GetStringBuilder().ToString();
+                }
+                catch
+                {
+                    // Se não for XML válido, mantém o texto original
+                }
+
+                txtXmlFinal.Controls[0].Text = xmlFormatado;
 
                 var ehValido = xmlValidator.ValidarAssinaturaXml(xmlAssinado);
 
