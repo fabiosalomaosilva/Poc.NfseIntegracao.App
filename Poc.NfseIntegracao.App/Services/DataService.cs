@@ -10,14 +10,14 @@ public class DataService
         try
         {
             var filePath = "Data/dados.json";
-            List<object> dataList = new();
+            List<object> dataList = [];
 
             if (File.Exists(filePath))
             {
                 var existingJson = File.ReadAllText(filePath);
                 if (!string.IsNullOrWhiteSpace(existingJson))
                 {
-                    dataList = JsonSerializer.Deserialize<List<object>>(existingJson) ?? new List<object>();
+                    dataList = JsonSerializer.Deserialize<List<object>>(existingJson) ?? [];
                 }
             }
 
@@ -56,7 +56,7 @@ public class DataService
 
         if (!string.IsNullOrWhiteSpace(existingJson))
         {
-            dataList = JsonSerializer.Deserialize<List<NfseData>>(existingJson) ?? new List<NfseData>();
+            dataList = JsonSerializer.Deserialize<List<NfseData>>(existingJson) ?? [];
         }
 
         return dataList;

@@ -187,6 +187,10 @@ namespace Poc.NfseIntegracao.App
             frm.ShowDialog();
         }
 
-
+        private void nSUToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new FrmNsuList();
+            frm.ShowDialog();
+        }
     }
 }

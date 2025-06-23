@@ -48,8 +48,9 @@
             enviadasToolStripMenuItem = new ToolStripMenuItem();
             sairToolStripMenuItem = new ToolStripMenuItem();
             toolStrip1 = new ToolStrip();
-            toolStripButton1 = new ToolStripButton();
             toolStripButton2 = new ToolStripButton();
+            toolStripButton1 = new ToolStripButton();
+            nSUToolStripMenuItem = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -234,16 +235,16 @@
             // 
             // cadastrosToolStripMenuItem
             // 
-            cadastrosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { enviadasToolStripMenuItem });
+            cadastrosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { enviadasToolStripMenuItem, nSUToolStripMenuItem });
             cadastrosToolStripMenuItem.Name = "cadastrosToolStripMenuItem";
             cadastrosToolStripMenuItem.Size = new Size(71, 20);
-            cadastrosToolStripMenuItem.Text = "Cadastros";
+            cadastrosToolStripMenuItem.Text = "Consultas";
             // 
             // enviadasToolStripMenuItem
             // 
             enviadasToolStripMenuItem.Name = "enviadasToolStripMenuItem";
-            enviadasToolStripMenuItem.Size = new Size(120, 22);
-            enviadasToolStripMenuItem.Text = "Enviadas";
+            enviadasToolStripMenuItem.Size = new Size(180, 22);
+            enviadasToolStripMenuItem.Text = "DANFE";
             enviadasToolStripMenuItem.Click += enviadasToolStripMenuItem_Click;
             // 
             // sairToolStripMenuItem
@@ -263,6 +264,15 @@
             toolStrip1.TabIndex = 3;
             toolStrip1.Text = "toolStrip1";
             // 
+            // toolStripButton2
+            // 
+            toolStripButton2.Image = (Image)resources.GetObject("toolStripButton2.Image");
+            toolStripButton2.ImageTransparentColor = Color.Magenta;
+            toolStripButton2.Name = "toolStripButton2";
+            toolStripButton2.Size = new Size(108, 36);
+            toolStripButton2.Text = "Editar dados";
+            toolStripButton2.Click += editarDadosDoEmitenteToolStripMenuItem_Click;
+            // 
             // toolStripButton1
             // 
             toolStripButton1.ForeColor = SystemColors.ControlText;
@@ -273,14 +283,12 @@
             toolStripButton1.Text = "Enviar XML";
             toolStripButton1.Click += btnEnviar_Click;
             // 
-            // toolStripButton2
+            // nSUToolStripMenuItem
             // 
-            toolStripButton2.Image = (Image)resources.GetObject("toolStripButton2.Image");
-            toolStripButton2.ImageTransparentColor = Color.Magenta;
-            toolStripButton2.Name = "toolStripButton2";
-            toolStripButton2.Size = new Size(108, 36);
-            toolStripButton2.Text = "Editar dados";
-            toolStripButton2.Click += editarDadosDoEmitenteToolStripMenuItem_Click;
+            nSUToolStripMenuItem.Name = "nSUToolStripMenuItem";
+            nSUToolStripMenuItem.Size = new Size(180, 22);
+            nSUToolStripMenuItem.Text = "NSU";
+            nSUToolStripMenuItem.Click += nSUToolStripMenuItem_Click;
             // 
             // Form1
             // 
@@ -337,5 +345,6 @@
         private ToolStrip toolStrip1;
         private ToolStripButton toolStripButton1;
         private ToolStripButton toolStripButton2;
+        private ToolStripMenuItem nSUToolStripMenuItem;
     }
 }

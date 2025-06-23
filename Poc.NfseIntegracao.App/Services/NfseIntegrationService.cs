@@ -139,6 +139,32 @@ public class NfseIntegrationService : IDisposable
         }
     }
 
+    public async Task<Lotedfe[]> ConsultarLoteDfe(string nsu)
+    {
+        try
+        {
+            CriarHttpCliente(TipoEndpoint.Adn);
+
+            var endpoint = $"/municipios/dfe/{nsu}";
+
+
+            var response = await _httpClient.GetAsync(endpoint);
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonData = JsonSerializer.Deserialize<DfeLoteResponse>(responseContent);
+                return jsonData.LoteDFe;
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+        return Array.Empty<Lotedfe>();
+    }
+
+
     public async Task<ApiResponse<object>> RegistrarEvento(string chaveAcesso, string eventoCompactado)
     {
         try
