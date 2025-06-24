@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel1 = new Panel();
+            btnVerDanfe = new Button();
             btmFechar = new Button();
             btnPesquisar = new Button();
             txtNsu = new TextBox();
@@ -46,7 +47,6 @@
             txtXmlCompactado = new Poc.NfseIntegracao.App.Componentes.RichTextBoxWithLines();
             groupBox2 = new GroupBox();
             txtXmlDescompactado = new Poc.NfseIntegracao.App.Componentes.RichTextBoxWithLines();
-            btnVerDanfe = new Button();
             tableLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -88,6 +88,21 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1244, 59);
             panel1.TabIndex = 0;
+            // 
+            // btnVerDanfe
+            // 
+            btnVerDanfe.BackColor = Color.Goldenrod;
+            btnVerDanfe.FlatStyle = FlatStyle.Flat;
+            btnVerDanfe.Font = new Font("Segoe UI", 10F);
+            btnVerDanfe.ForeColor = Color.Black;
+            btnVerDanfe.Location = new Point(338, 16);
+            btnVerDanfe.MinimumSize = new Size(0, 25);
+            btnVerDanfe.Name = "btnVerDanfe";
+            btnVerDanfe.Size = new Size(115, 32);
+            btnVerDanfe.TabIndex = 4;
+            btnVerDanfe.Text = "Ver DANFE";
+            btnVerDanfe.UseVisualStyleBackColor = false;
+            btnVerDanfe.Click += btnVerDanfe_Click;
             // 
             // btmFechar
             // 
@@ -247,25 +262,12 @@
             txtXmlDescompactado.Size = new Size(607, 263);
             txtXmlDescompactado.TabIndex = 0;
             // 
-            // btnVerDanfe
-            // 
-            btnVerDanfe.BackColor = Color.Goldenrod;
-            btnVerDanfe.FlatStyle = FlatStyle.Flat;
-            btnVerDanfe.Font = new Font("Segoe UI", 10F);
-            btnVerDanfe.ForeColor = Color.Black;
-            btnVerDanfe.Location = new Point(338, 16);
-            btnVerDanfe.MinimumSize = new Size(0, 25);
-            btnVerDanfe.Name = "btnVerDanfe";
-            btnVerDanfe.Size = new Size(115, 32);
-            btnVerDanfe.TabIndex = 4;
-            btnVerDanfe.Text = "Ver DANFE";
-            btnVerDanfe.UseVisualStyleBackColor = false;
-            btnVerDanfe.Click += btnVerDanfe_Click;
-            // 
             // FrmNsuList
             // 
+            AcceptButton = btnPesquisar;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btmFechar;
             ClientSize = new Size(1250, 647);
             Controls.Add(tableLayoutPanel1);
             Name = "FrmNsuList";
