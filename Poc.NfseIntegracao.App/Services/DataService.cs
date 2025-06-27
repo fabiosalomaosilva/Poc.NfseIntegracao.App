@@ -5,7 +5,7 @@ using System.Text.Json;
 namespace Poc.NfseIntegracao.App.Services;
 public class DataService
 {
-    public static void SaveData(string chaveAcesso, string cadastroNacional, string nomeEmitente, DateTime data)
+    public static void SaveData(NfseData nfseData, DateTime data)
     {
         try
         {
@@ -21,15 +21,7 @@ public class DataService
                 }
             }
 
-            var dataToSave = new NfseData
-            {
-                ChaveAcesso = chaveAcesso,
-                CadastroNacional = cadastroNacional,
-                NomeEmitente = nomeEmitente,
-                DataProcessamento = data
-            };
-
-            dataList.Add(dataToSave);
+            dataList.Add(nfseData);
 
             var json = JsonSerializer.Serialize(dataList, new JsonSerializerOptions
             {

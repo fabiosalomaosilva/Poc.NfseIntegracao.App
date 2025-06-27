@@ -6,9 +6,10 @@ namespace Poc.NfseIntegracao.App.Janelas
     public partial class FrmEditarDadosEmitentes : Form
     {
         private readonly string _xmlOriginal;
-        private List<CodigoTributacao> codigosTributacao;
+        private List<CodigoTributacao> _codigosTributacao = [];
 
-        public string XmlAlterado { get; private set; }
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public string? XmlAlterado { get; private set; }
 
         public FrmEditarDadosEmitentes(string xmlString)
         {
@@ -25,12 +26,13 @@ namespace Poc.NfseIntegracao.App.Janelas
                 // Carrega o JSON dos códigos de tributação
                 string jsonPath = Path.Combine(Application.StartupPath, "Data/itensServico.json");
                 string jsonContent = File.ReadAllText(jsonPath);
-                codigosTributacao = JsonConvert.DeserializeObject<List<CodigoTributacao>>(jsonContent);
+                var codigos = JsonConvert.DeserializeObject<List<CodigoTributacao>>(jsonContent);
+                _codigosTributacao = codigos ?? new List<CodigoTributacao>();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao carregar códigos de tributação: {ex.Message}");
-                codigosTributacao = new List<CodigoTributacao>();
+                _codigosTributacao = new List<CodigoTributacao>();
             }
         }
 
@@ -40,7 +42,7 @@ namespace Poc.NfseIntegracao.App.Janelas
             // Configura o autocomplete básico do TextBox
             var autoCompleteCollection = new AutoCompleteStringCollection();
 
-            foreach (var codigo in codigosTributacao)
+            foreach (var codigo in _codigosTributacao)
             {
                 // Adiciona tanto o código quanto a descrição para busca
                 autoCompleteCollection.Add($"{codigo.codigo} - {codigo.descricao}");
@@ -133,11 +135,11 @@ namespace Poc.NfseIntegracao.App.Janelas
             var codigoObra = txtCodigoObra.Text.Trim();
 
             var codigoTributoNacional = txtCodigoTributoNacional.Text.Split('-')[0].Trim();
-            var codigoTributoNacionalTexto = txtCodigoTributoNacional.Text.Split('-')[1].Trim().Replace(".", "");
+            var codigoTributoNacionalTexto = txtCodigoTributoNacional.Text.Split('-').Length > 1
+                ? txtCodigoTributoNacional.Text.Split('-')[1].Trim().Replace(".", "")
+                : string.Empty;
 
             //var mostrarEnderecoObra = ckbEnderecoObra.Checked;
-
-
 
             var xmlDoc = XDocument.Parse(_xmlOriginal);
             XNamespace ns = "http://www.sped.fazenda.gov.br/nfse";
@@ -201,7 +203,7 @@ namespace Poc.NfseIntegracao.App.Janelas
             var xDescServ = emit.Element(ns + "xDescServ");
             if (xDescServ == null) return;
 
-            var xTribMun = infNFSe.Element(ns + "xTribMun");
+            var xTribMun = infNFSe?.Element(ns + "xTribMun");
             if (xTribMun == null) return;
 
             var xTribNac = infNFSe.Element(ns + "xTribNac");
@@ -445,7 +447,7 @@ namespace Poc.NfseIntegracao.App.Janelas
                 e.KeyChar = '.';
             }
 
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains("."))
+            if (e.KeyChar == '.' && (sender as TextBox)?.Text?.Contains(".") == true)
             {
                 e.Handled = true;
             }
@@ -463,7 +465,7 @@ namespace Poc.NfseIntegracao.App.Janelas
                 e.KeyChar = '.';
             }
 
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains("."))
+            if (e.KeyChar == '.' && (sender as TextBox)?.Text?.Contains(".") == true)
             {
                 e.Handled = true;
             }
@@ -481,7 +483,7 @@ namespace Poc.NfseIntegracao.App.Janelas
                 e.KeyChar = '.';
             }
 
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains("."))
+            if (e.KeyChar == '.' && (sender as TextBox)?.Text?.Contains(".") == true)
             {
                 e.Handled = true;
             }
@@ -499,7 +501,7 @@ namespace Poc.NfseIntegracao.App.Janelas
                 e.KeyChar = '.';
             }
 
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains("."))
+            if (e.KeyChar == '.' && (sender as TextBox)?.Text?.Contains(".") == true)
             {
                 e.Handled = true;
             }
@@ -517,7 +519,7 @@ namespace Poc.NfseIntegracao.App.Janelas
                 e.KeyChar = '.';
             }
 
-            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains("."))
+            if (e.KeyChar == '.' && (sender as TextBox)?.Text?.Contains(".") == true)
             {
                 e.Handled = true;
             }

@@ -144,11 +144,15 @@ namespace Poc.NfseIntegracao.App
 
                 if (response.Success)
                 {
-                    txtApiResponse.Text = JsonSerializer.Serialize(response.Data, new JsonSerializerOptions { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+                    txtApiResponse.Text = JsonSerializer.Serialize(response.Data,
+                        new JsonSerializerOptions
+                        { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
 
-                    var (cnpj, nomeEmitente) = ObterDadosEmitente(txtXml.Controls[0].Text.Trim());
+                    var dadosApi = JsonSerializer.Deserialize<DfeResponse>(txtApiResponse.Text);
+                    var dataNfse = ObterDadosEmitente(txtXml.Controls[0].Text.Trim(), dadosApi.Lote[0].ChaveAcesso, dadosApi.DataHoraProcessamento);
                     var data = JsonSerializer.Deserialize<DfeResponse>(txtApiResponse.Text);
-                    DataService.SaveData(data.Lote[0].ChaveAcesso, cnpj, nomeEmitente, data.DataHoraProcessamento);
+
+                    DataService.SaveData(dataNfse, data.DataHoraProcessamento);
                 }
                 else
                     txtApiResponse.Text = JsonSerializer.Serialize(response.ErrorMessage, new JsonSerializerOptions { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
@@ -204,15 +208,44 @@ namespace Poc.NfseIntegracao.App
             Application.Exit();
         }
 
-        private (string cadastroNacional, string nomeEmitente) ObterDadosEmitente(string xml)
+        // DTO para armazenar os dados extraídos
+
+
+        private NfseData ObterDadosEmitente(string xml, string chaveAcesso, DateTime dataProcessamento)
         {
             var xmlDoc = XDocument.Parse(xml);
             XNamespace ns = "http://www.sped.fazenda.gov.br/nfse";
             var emitente = xmlDoc.Descendants(ns + "emit").FirstOrDefault();
-            if (emitente == null) return (string.Empty, string.Empty);
+            if (emitente == null) return new NfseData();
+
             var cnpj = emitente.Element(ns + "CNPJ")?.Value ?? string.Empty;
             var nome = emitente.Element(ns + "xNome")?.Value ?? string.Empty;
-            return (cnpj, nome);
+            if (string.IsNullOrEmpty(cnpj) && emitente.Element(ns + "CPF") != null)
+            {
+                cnpj = emitente.Element(ns + "CPF")?.Value ?? string.Empty;
+            }
+
+            // Busca os valores das tags solicitadas
+            var cTribNac = xmlDoc.Descendants(ns + "cTribNac").FirstOrDefault()?.Value ?? string.Empty;
+            var vServ = xmlDoc.Descendants(ns + "vServ").FirstOrDefault()?.Value ?? string.Empty;
+            var vBC = xmlDoc.Descendants(ns + "vBC").FirstOrDefault()?.Value ?? string.Empty;
+            var pAliqAplic = xmlDoc.Descendants(ns + "pAliqAplic").FirstOrDefault()?.Value ?? string.Empty;
+            var vISSQN = xmlDoc.Descendants(ns + "vISSQN").FirstOrDefault()?.Value ?? string.Empty;
+            var vLiq = xmlDoc.Descendants(ns + "vLiq").FirstOrDefault()?.Value ?? string.Empty;
+
+            return new NfseData
+            {
+                CadastroNacional = cnpj,
+                NomeEmitente = nome,
+                cTribNac = cTribNac,
+                vServ = vServ,
+                vBC = vBC,
+                pAliqAplic = pAliqAplic,
+                vISSQN = vISSQN,
+                vLiq = vLiq,
+                DataProcessamento = dataProcessamento,
+                ChaveAcesso = chaveAcesso
+            };
         }
 
         private void enviadasToolStripMenuItem_Click(object sender, EventArgs e)

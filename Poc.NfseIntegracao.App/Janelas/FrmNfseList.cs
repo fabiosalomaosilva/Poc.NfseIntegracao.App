@@ -12,7 +12,8 @@ public partial class FrmNfseList : Form
     private void FrmNfseList_Load(object sender, EventArgs e)
     {
         var dataList = DataService.GetNfseData();
-        bindingSource1.DataSource = dataList;
+        var lista = dataList.OrderByDescending(p => p.DataProcessamento);
+        bindingSource1.DataSource = lista;
         dataGridView1.DataSource = bindingSource1;
         dataGridView1.Refresh();
     }
