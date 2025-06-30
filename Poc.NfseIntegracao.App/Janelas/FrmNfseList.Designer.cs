@@ -31,10 +31,6 @@
             components = new System.ComponentModel.Container();
             tableLayoutPanel1 = new TableLayoutPanel();
             dataGridView1 = new DataGridView();
-            bindingSource1 = new BindingSource(components);
-            panel1 = new Panel();
-            btnCancelar = new Button();
-            btnVerXml = new Button();
             ChaveAcesso = new DataGridViewTextBoxColumn();
             CadastroNacional = new DataGridViewTextBoxColumn();
             NomeEmitente = new DataGridViewTextBoxColumn();
@@ -45,6 +41,11 @@
             pAliqAplic = new DataGridViewTextBoxColumn();
             vISSQN = new DataGridViewTextBoxColumn();
             vLiq = new DataGridViewTextBoxColumn();
+            bindingSource1 = new BindingSource(components);
+            panel1 = new Panel();
+            btnDownload = new Button();
+            btnCancelar = new Button();
+            btnVerXml = new Button();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
@@ -63,7 +64,7 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableLayoutPanel1.Size = new Size(1135, 450);
+            tableLayoutPanel1.Size = new Size(1291, 606);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // dataGridView1
@@ -75,48 +76,8 @@
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.Location = new Point(3, 3);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(1129, 394);
+            dataGridView1.Size = new Size(1285, 550);
             dataGridView1.TabIndex = 0;
-            // 
-            // panel1
-            // 
-            panel1.Controls.Add(btnCancelar);
-            panel1.Controls.Add(btnVerXml);
-            panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(3, 403);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(1129, 44);
-            panel1.TabIndex = 1;
-            // 
-            // btnCancelar
-            // 
-            btnCancelar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnCancelar.BackColor = Color.Red;
-            btnCancelar.FlatStyle = FlatStyle.Flat;
-            btnCancelar.Font = new Font("Segoe UI", 9.75F);
-            btnCancelar.ForeColor = Color.White;
-            btnCancelar.Location = new Point(1005, 6);
-            btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(115, 32);
-            btnCancelar.TabIndex = 1;
-            btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = false;
-            btnCancelar.Click += button2_Click;
-            // 
-            // btnVerXml
-            // 
-            btnVerXml.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnVerXml.BackColor = Color.Green;
-            btnVerXml.FlatStyle = FlatStyle.Flat;
-            btnVerXml.Font = new Font("Segoe UI", 9.75F);
-            btnVerXml.ForeColor = Color.White;
-            btnVerXml.Location = new Point(884, 6);
-            btnVerXml.Name = "btnVerXml";
-            btnVerXml.Size = new Size(115, 32);
-            btnVerXml.TabIndex = 0;
-            btnVerXml.Text = "Ver DANFE";
-            btnVerXml.UseVisualStyleBackColor = false;
-            btnVerXml.Click += btnVerXml_Click;
             // 
             // ChaveAcesso
             // 
@@ -199,19 +160,72 @@
             vLiq.Name = "vLiq";
             vLiq.ReadOnly = true;
             // 
+            // panel1
+            // 
+            panel1.Controls.Add(btnDownload);
+            panel1.Controls.Add(btnCancelar);
+            panel1.Controls.Add(btnVerXml);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(3, 559);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1285, 44);
+            panel1.TabIndex = 1;
+            // 
+            // btnDownload
+            // 
+            btnDownload.BackColor = Color.Teal;
+            btnDownload.FlatStyle = FlatStyle.Flat;
+            btnDownload.Font = new Font("Segoe UI", 10F);
+            btnDownload.ForeColor = Color.White;
+            btnDownload.Location = new Point(1040, 6);
+            btnDownload.MinimumSize = new Size(0, 25);
+            btnDownload.Name = "btnDownload";
+            btnDownload.Size = new Size(115, 32);
+            btnDownload.TabIndex = 6;
+            btnDownload.Text = "Download";
+            btnDownload.UseVisualStyleBackColor = false;
+            btnDownload.Click += button2_Click;
+            // 
+            // btnCancelar
+            // 
+            btnCancelar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnCancelar.BackColor = Color.Red;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Font = new Font("Segoe UI", 9.75F);
+            btnCancelar.ForeColor = Color.White;
+            btnCancelar.Location = new Point(1161, 6);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(115, 32);
+            btnCancelar.TabIndex = 1;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = false;
+            btnCancelar.Click += button2_Click;
+            // 
+            // btnVerXml
+            // 
+            btnVerXml.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnVerXml.BackColor = Color.Green;
+            btnVerXml.FlatStyle = FlatStyle.Flat;
+            btnVerXml.Font = new Font("Segoe UI", 9.75F);
+            btnVerXml.ForeColor = Color.White;
+            btnVerXml.Location = new Point(919, 6);
+            btnVerXml.Name = "btnVerXml";
+            btnVerXml.Size = new Size(115, 32);
+            btnVerXml.TabIndex = 0;
+            btnVerXml.Text = "Ver DANFE";
+            btnVerXml.UseVisualStyleBackColor = false;
+            btnVerXml.Click += btnVerXml_Click;
+            // 
             // FrmNfseList
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancelar;
-            ClientSize = new Size(1135, 450);
+            ClientSize = new Size(1291, 606);
             Controls.Add(tableLayoutPanel1);
-            MaximizeBox = false;
-            MinimizeBox = false;
             Name = "FrmNfseList";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Lista de NFSE";
-            WindowState = FormWindowState.Maximized;
             Load += FrmNfseList_Load;
             tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
@@ -238,5 +252,6 @@
         private DataGridViewTextBoxColumn pAliqAplic;
         private DataGridViewTextBoxColumn vISSQN;
         private DataGridViewTextBoxColumn vLiq;
+        private Button btnDownload;
     }
 }

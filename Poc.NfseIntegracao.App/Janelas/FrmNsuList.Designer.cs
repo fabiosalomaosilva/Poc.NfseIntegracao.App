@@ -47,6 +47,7 @@
             txtXmlCompactado = new Poc.NfseIntegracao.App.Componentes.RichTextBoxWithLines();
             groupBox2 = new GroupBox();
             txtXmlDescompactado = new Poc.NfseIntegracao.App.Componentes.RichTextBoxWithLines();
+            button1 = new Button();
             tableLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -78,6 +79,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(button1);
             panel1.Controls.Add(btnVerDanfe);
             panel1.Controls.Add(btmFechar);
             panel1.Controls.Add(btnPesquisar);
@@ -262,6 +264,21 @@
             txtXmlDescompactado.Size = new Size(607, 263);
             txtXmlDescompactado.TabIndex = 0;
             // 
+            // button1
+            // 
+            button1.BackColor = Color.Teal;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 10F);
+            button1.ForeColor = Color.White;
+            button1.Location = new Point(459, 16);
+            button1.MinimumSize = new Size(0, 25);
+            button1.Name = "button1";
+            button1.Size = new Size(115, 32);
+            button1.TabIndex = 5;
+            button1.Text = "Download";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
             // FrmNsuList
             // 
             AcceptButton = btnPesquisar;
@@ -308,5 +325,6 @@
         private DataGridViewTextBoxColumn tipoDocumentoDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn dataHoraGeracaoDataGridViewTextBoxColumn;
         private Button btnVerDanfe;
+        private Button button1;
     }
 }

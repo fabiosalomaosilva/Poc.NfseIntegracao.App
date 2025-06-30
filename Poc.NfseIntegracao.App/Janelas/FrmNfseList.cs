@@ -18,9 +18,19 @@ public partial class FrmNfseList : Form
         dataGridView1.Refresh();
     }
 
-    private void button2_Click(object sender, EventArgs e)
+    private async void button2_Click(object sender, EventArgs e)
     {
-        this.Close();
+        try
+        {
+            var data = bindingSource1.Current as NfseData;
+            if (data == null) return;
+            var service = new NfseIntegrationService();
+            await service.DowloadDanfeNfse(data.ChaveAcesso);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
     }
 
     private async void btnVerXml_Click(object sender, EventArgs e)

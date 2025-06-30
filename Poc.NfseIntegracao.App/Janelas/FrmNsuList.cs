@@ -92,5 +92,21 @@ namespace Poc.NfseIntegracao.App.Janelas
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var data = lotedfeBindingSource.Current as Lotedfe;
+                if (data == null) return;
+                var service = new NfseIntegrationService();
+                await service.DowloadDanfeNfse(data.ChaveAcesso);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

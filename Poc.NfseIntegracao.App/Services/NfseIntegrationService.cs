@@ -139,6 +139,49 @@ public class NfseIntegrationService : IDisposable
         }
     }
 
+    public async Task<bool> DowloadDanfeNfse(string chaveAcesso)
+    {
+        try
+        {
+            CriarHttpCliente(TipoEndpoint.Sefin);
+
+            var endpoint = $"/sefinnacional/danfse/{chaveAcesso}";
+
+
+            var response = await _httpClient.GetAsync(endpoint);
+
+            if (!response.IsSuccessStatusCode) return false;
+
+            var responseContent = await response.Content.ReadAsByteArrayAsync();
+            var dialog = new SaveFileDialog();
+            dialog.Filter = "PDF files (*.pdf)|*.pdf";
+            dialog.FileName = $"{chaveAcesso}.pdf";
+            if (dialog.ShowDialog() != DialogResult.OK) return false;
+            await File.WriteAllBytesAsync(dialog.FileName, responseContent);
+
+            var openFile = MessageBox.Show("Deseja abrir o documento", "Abrir documento", MessageBoxButtons.OKCancel);
+
+            if (openFile == DialogResult.OK)
+            {
+                var process = new System.Diagnostics.Process();
+                process.StartInfo = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = dialog.FileName,
+                    UseShellExecute = true
+                };
+                process.Start();
+                return true;
+            }
+            return true;
+
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+
     public async Task<Lotedfe[]> ConsultarLoteDfe(string nsu)
     {
         try
