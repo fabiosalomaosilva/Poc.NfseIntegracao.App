@@ -60,6 +60,15 @@ namespace Poc.NfseIntegracao.App.Services
 
         public async Task<string> CompactarXmlAsync(string xml)
         {
+            if (xml.Contains("utf-16") || !xml.Contains("UTF-8"))
+            {
+                xml = xml.Replace("encoding=\"utf-16\"", "encoding=\"UTF-8\"");
+                if (!xml.StartsWith("<?xml"))
+                {
+                    xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml;
+                }
+            }
+
             var bytes = Encoding.UTF8.GetBytes(xml);
 
             using var memoryStream = new MemoryStream();

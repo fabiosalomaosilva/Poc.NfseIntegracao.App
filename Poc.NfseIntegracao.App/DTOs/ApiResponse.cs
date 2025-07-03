@@ -10,3 +10,15 @@ public class ApiResponse<T>
     public MensagemProcessamento? ErrorMessage { get; set; }
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 }
+
+public enum Ambiente
+{
+    Producao = 1,
+    Homologacao = 2
+}
+
+public enum Prefeitura
+{
+    RegenteFeijo,
+    PatoBranco
+}

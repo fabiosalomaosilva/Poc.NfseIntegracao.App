@@ -11,24 +11,32 @@ public class NfseIntegrationService : IDisposable
     private bool _disposed = false;
 
 
-    public void CriarHttpCliente(TipoEndpoint tipoEndpoint)
+    public void CriarHttpCliente(TipoEndpoint tipoEndpoint, Prefeitura prefeitura, Ambiente ambiente)
     {
         var handler = new HttpClientHandler();
         handler.ClientCertificateOptions = ClientCertificateOption.Manual;
 
-        var certificate = new X509Certificate2("C:/CertificadoClientes/cert.pfx", "123456");
-        handler.ClientCertificates.Add(certificate);
-        var urlBase = string.Empty;
+        var pathCert = "";
+        var pathCertRegenteFeijo = "C:/CertificadoClientes/cert.pfx";
+        var pathCertPatoBranco = "C:/CertificadoClientes/cert.p12";
 
-        switch (tipoEndpoint)
+        pathCert = prefeitura == Prefeitura.RegenteFeijo ? pathCertRegenteFeijo : pathCertPatoBranco;
+        var senha = prefeitura == Prefeitura.PatoBranco ? "pqDbFSL1" : "123456";
+
+
+        var certificate = new X509Certificate2(pathCert, senha);
+        handler.ClientCertificates.Add(certificate);
+
+        var urlBase = tipoEndpoint switch
         {
-            case TipoEndpoint.Adn:
-                urlBase = "https://adn.producaorestrita.nfse.gov.br/";
-                break;
-            case TipoEndpoint.Sefin:
-                urlBase = "https://sefin.producaorestrita.nfse.gov.br/";
-                break;
-        }
+            TipoEndpoint.Adn => ambiente == Ambiente.Homologacao
+                ? "https://adn.producaorestrita.nfse.gov.br/"
+                : "https://adn.nfse.gov.br/",
+            TipoEndpoint.Sefin => ambiente == Ambiente.Homologacao
+                ? "https://sefin.producaorestrita.nfse.gov.br/"
+                : "https://sefin.nfse.gov.br/",
+            _ => string.Empty
+        };
 
         _httpClient = new HttpClient(handler)
         {
@@ -51,7 +59,7 @@ public class NfseIntegrationService : IDisposable
     {
         try
         {
-            CriarHttpCliente(TipoEndpoint.Adn);
+            CriarHttpCliente(TipoEndpoint.Adn, Prefeitura.RegenteFeijo, Ambiente.Homologacao);
             var request = new
             {
                 LoteXmlGZipB64 = new[] { dpsCompactada }
@@ -92,7 +100,7 @@ public class NfseIntegrationService : IDisposable
     {
         try
         {
-            CriarHttpCliente(TipoEndpoint.Sefin);
+            CriarHttpCliente(TipoEndpoint.Sefin, Prefeitura.RegenteFeijo, Ambiente.Homologacao);
 
             var endpoint = $"/sefinnacional/danfse/{chaveAcesso}";
 
@@ -143,7 +151,7 @@ public class NfseIntegrationService : IDisposable
     {
         try
         {
-            CriarHttpCliente(TipoEndpoint.Sefin);
+            CriarHttpCliente(TipoEndpoint.Sefin, Prefeitura.RegenteFeijo, Ambiente.Homologacao);
 
             var endpoint = $"/sefinnacional/danfse/{chaveAcesso}";
 
@@ -182,13 +190,13 @@ public class NfseIntegrationService : IDisposable
     }
 
 
-    public async Task<Lotedfe[]> ConsultarLoteDfe(string nsu)
+    public async Task<Lotedfe[]> ConsultarLoteDfe(string nsu, Prefeitura prefeitura, Ambiente ambiente)
     {
         try
         {
-            CriarHttpCliente(TipoEndpoint.Adn);
+            CriarHttpCliente(TipoEndpoint.Adn, prefeitura, ambiente);
 
-            var endpoint = $"/municipios/dfe/{nsu}";
+            var endpoint = ambiente == Ambiente.Homologacao ? $"/municipios/dfe/{nsu}" : $"/municipios/dfe/{nsu}?tipoNSU=DISTRIBUICAO&lote=true";
 
 
             var response = await _httpClient.GetAsync(endpoint);
@@ -207,16 +215,57 @@ public class NfseIntegrationService : IDisposable
         return Array.Empty<Lotedfe>();
     }
 
+    public async Task<ApiResponse<object>> CancelarNota(string xmlCancelamento, string chaveAcesso)
+    {
+        try
+        {
+            CriarHttpCliente(TipoEndpoint.Sefin, Prefeitura.RegenteFeijo, Ambiente.Homologacao);
+
+            var request = new
+            {
+                pedidoRegistroEventoXmlGZipB64 = xmlCancelamento
+            };
+
+            var json = JsonSerializer.Serialize(request);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+            var response = await _httpClient.PostAsync("/sefinnacional/nfse/{chaveAcesso}/eventos", content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = JsonSerializer.Deserialize<DfeResponse>(responseContent);
+                return new ApiResponse<object> { Success = true, Data = result };
+            }
+            else
+            {
+                var erroResponse = JsonSerializer.Deserialize<DfeResponse>(responseContent);
+                return new ApiResponse<object>()
+                {
+                    Success = false,
+                    Data = erroResponse
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+        return new ApiResponse<object>();
+    }
+
 
     public async Task<ApiResponse<object>> RegistrarEvento(string chaveAcesso, string eventoCompactado)
     {
         try
         {
-            var endpoint = $"/nfse/{chaveAcesso}/eventos";
+            CriarHttpCliente(TipoEndpoint.Sefin, Prefeitura.RegenteFeijo, Ambiente.Homologacao);
+            var endpoint = $"/sefinnacional/nfse/{chaveAcesso}/eventos";
 
             var request = new
             {
-                eventoXmlGZipB64 = eventoCompactado
+                pedidoRegistroEventoXmlGZipB64 = eventoCompactado
             };
 
             var json = JsonSerializer.Serialize(request);

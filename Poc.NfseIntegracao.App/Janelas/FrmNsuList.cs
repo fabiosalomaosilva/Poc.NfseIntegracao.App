@@ -1,5 +1,6 @@
 ﻿using Poc.NfseIntegracao.App.DTOs;
 using Poc.NfseIntegracao.App.Services;
+using MotivoCancelamento = Poc.NfseIntegracao.App.Services.MotivoCancelamento;
 
 namespace Poc.NfseIntegracao.App.Janelas
 {
@@ -18,7 +19,10 @@ namespace Poc.NfseIntegracao.App.Janelas
             {
                 Cursor = Cursors.WaitCursor;
                 var service = new NfseIntegrationService();
-                var nsuData = await service.ConsultarLoteDfe(txtNsu.Text);
+                var prefeituraSelecionada = rbPatoBranco.Checked ? Prefeitura.PatoBranco : Prefeitura.RegenteFeijo;
+                var ambienteSelecionado = rbProducaoRestrita.Checked ? Ambiente.Homologacao : Ambiente.Producao;
+
+                var nsuData = await service.ConsultarLoteDfe(txtNsu.Text, prefeituraSelecionada, ambienteSelecionado);
                 lotedfeBindingSource.DataSource = nsuData;
                 dataGridView1.DataSource = lotedfeBindingSource;
                 dataGridView1.Refresh();
@@ -107,6 +111,41 @@ namespace Poc.NfseIntegracao.App.Janelas
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private async void btnCancelar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var data = lotedfeBindingSource.Current as Lotedfe;
+                if (data == null) return;
+                var service = new NfseIntegrationService();
+                var xmlService = new XmlService();
+
+                var xmlDescompactado = await xmlService.DescompactarXmlAsync(data.ArquivoXml);
+
+                var resultado = await NfSeCancelamentoService.CancelarNFSe(
+                    xmlDescompactado,
+                    MotivoCancelamento.ErroNaEmissao,
+                    "Solicitação de cancelamento via integração",
+                    forcarHomologacao: true
+                );
+
+                if (resultado.Sucesso)
+                {
+                    MessageBox.Show("Cancelamento realizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show($"Erro ao cancelar NFSe: {resultado.DetalhesErro}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                //await service.CancelarNota(xmlCompactado, data.ChaveAcesso);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
     }
 }
