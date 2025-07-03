@@ -96,11 +96,11 @@ public class NfseIntegrationService : IDisposable
         }
     }
 
-    public async Task<ApiResponse<object>> ConsultarNfse(string chaveAcesso)
+    public async Task<ApiResponse<object>> ConsultarNfse(string chaveAcesso, Prefeitura prefeitura, Ambiente ambiente)
     {
         try
         {
-            CriarHttpCliente(TipoEndpoint.Sefin, Prefeitura.RegenteFeijo, Ambiente.Homologacao);
+            CriarHttpCliente(TipoEndpoint.Sefin, prefeitura, ambiente);
 
             var endpoint = $"/sefinnacional/danfse/{chaveAcesso}";
 
@@ -129,6 +129,7 @@ public class NfseIntegrationService : IDisposable
             }
             else
             {
+                MessageBox.Show($"A chave de acesso não existe no ambiente de {ambiente.GetDescription()}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 var responseContentError = await response.Content.ReadAsStringAsync();
                 var erroResponse = JsonSerializer.Deserialize<NFSePostResponseErro>(responseContentError);
                 return new ApiResponse<object>
@@ -147,11 +148,11 @@ public class NfseIntegrationService : IDisposable
         }
     }
 
-    public async Task<bool> DowloadDanfeNfse(string chaveAcesso)
+    public async Task<bool> DowloadDanfeNfse(string chaveAcesso, Prefeitura prefeitura, Ambiente ambiente)
     {
         try
         {
-            CriarHttpCliente(TipoEndpoint.Sefin, Prefeitura.RegenteFeijo, Ambiente.Homologacao);
+            CriarHttpCliente(TipoEndpoint.Sefin, prefeitura, ambiente);
 
             var endpoint = $"/sefinnacional/danfse/{chaveAcesso}";
 

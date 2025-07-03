@@ -19,6 +19,7 @@ namespace Poc.NfseIntegracao.App.Janelas
             {
                 Cursor = Cursors.WaitCursor;
                 var service = new NfseIntegrationService();
+
                 var prefeituraSelecionada = rbPatoBranco.Checked ? Prefeitura.PatoBranco : Prefeitura.RegenteFeijo;
                 var ambienteSelecionado = rbProducaoRestrita.Checked ? Ambiente.Homologacao : Ambiente.Producao;
 
@@ -85,10 +86,13 @@ namespace Poc.NfseIntegracao.App.Janelas
         {
             try
             {
+                var prefeituraSelecionada = rbPatoBranco.Checked ? Prefeitura.PatoBranco : Prefeitura.RegenteFeijo;
+                var ambienteSelecionado = rbProducaoRestrita.Checked ? Ambiente.Homologacao : Ambiente.Producao;
+
                 var data = lotedfeBindingSource.Current as Lotedfe;
                 if (data == null) return;
                 var service = new NfseIntegrationService();
-                await service.ConsultarNfse(data.ChaveAcesso);
+                await service.ConsultarNfse(data.ChaveAcesso, prefeituraSelecionada, ambienteSelecionado);
 
             }
             catch (Exception ex)
@@ -101,10 +105,15 @@ namespace Poc.NfseIntegracao.App.Janelas
         {
             try
             {
+                var prefeituraSelecionada = rbPatoBranco.Checked ? Prefeitura.PatoBranco : Prefeitura.RegenteFeijo;
+                var ambienteSelecionado = rbProducaoRestrita.Checked ? Ambiente.Homologacao : Ambiente.Producao;
+
                 var data = lotedfeBindingSource.Current as Lotedfe;
                 if (data == null) return;
                 var service = new NfseIntegrationService();
-                await service.DowloadDanfeNfse(data.ChaveAcesso);
+                var result = await service.DowloadDanfeNfse(data.ChaveAcesso, prefeituraSelecionada, ambienteSelecionado);
+                if (!result)
+                    MessageBox.Show($"A chave de acesso não existe no ambiente de {ambienteSelecionado.GetDescription()}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
             catch (Exception ex)
@@ -117,6 +126,12 @@ namespace Poc.NfseIntegracao.App.Janelas
         {
             try
             {
+                if (rbProducao.Checked)
+                {
+                    MessageBox.Show($"Não é permitido cancelar NFSe no ambiente de Produção", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 var data = lotedfeBindingSource.Current as Lotedfe;
                 if (data == null) return;
                 var service = new NfseIntegrationService();

@@ -25,7 +25,7 @@ public partial class FrmNfseList : Form
             var data = bindingSource1.Current as NfseData;
             if (data == null) return;
             var service = new NfseIntegrationService();
-            await service.DowloadDanfeNfse(data.ChaveAcesso);
+            await service.DowloadDanfeNfse(data.ChaveAcesso, Prefeitura.RegenteFeijo, Ambiente.Homologacao);
         }
         catch (Exception ex)
         {
@@ -40,7 +40,7 @@ public partial class FrmNfseList : Form
             var data = bindingSource1.Current as NfseData;
             if (data == null) return;
             var service = new NfseIntegrationService();
-            await service.ConsultarNfse(data.ChaveAcesso);
+            await service.ConsultarNfse(data.ChaveAcesso, Prefeitura.RegenteFeijo, Ambiente.Homologacao);
 
         }
         catch (Exception ex)

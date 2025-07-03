@@ -1,4 +1,6 @@
-﻿namespace Poc.NfseIntegracao.App.DTOs;
+﻿using System.ComponentModel;
+
+namespace Poc.NfseIntegracao.App.DTOs;
 
 /// <summary>
 /// Modelo de resposta simplificado
@@ -13,7 +15,9 @@ public class ApiResponse<T>
 
 public enum Ambiente
 {
+    [Description("Produção")]
     Producao = 1,
+    [Description("Produção restrita")]
     Homologacao = 2
 }
 
